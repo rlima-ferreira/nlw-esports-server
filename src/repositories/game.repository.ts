@@ -4,7 +4,8 @@ import prisma from '../services/prisma.service';
 const repo = prisma.game;
 
 const game = {
-  findAll: async (): Promise<Game[]> => repo.findMany(),
+  findAll: async (): Promise<Game[]> =>
+    repo.findMany({ include: { _count: { select: { ads: true } } } }),
   findOne: async (id: string): Promise<Game> =>
     repo.findUniqueOrThrow({ where: { id } }),
   create: async (data: Game): Promise<Game> => repo.create({ data }),
